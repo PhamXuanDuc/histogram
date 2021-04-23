@@ -1,12 +1,16 @@
-import numpy as np
-import cv2 as cv
-from matplotlib import pyplot as plt
-img = cv.imread('image.jpg',0)
-hist,bins = np.histogram(img.flatten(),256,[0,256])
-cdf = hist.cumsum()
-cdf_normalized = cdf * float(hist.max()) / cdf.max()
-plt.plot(cdf_normalized, color = 'b')
-plt.hist(img.flatten(),256,[0,256], color = 'r')
-plt.xlim([0,256])
-plt.legend(('cdf','histogram'), loc = 'upper left')
+import numpy as np 
+import cv2 
+import matplotlib.pyplot as plt
+
+img = cv2.imread('image.jpg', 0)
+img_equal_hist = cv2.equalizeHist(img)
+
+f, axes = plt.subplots(2,2, figsize=(30,20))
+axes[0, 0].imshow(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
+axes[0, 0].set_title('origin')
+axes[0, 1].imshow(cv2.cvtColor(img_equal_hist, cv2.COLOR_BGR2RGB))
+axes[0, 1].set_title('hist equal')
+axes[1, 0].hist(img.flatten(), 256, [0,256])
+axes[1, 1].hist(img_equal_hist.flatten(), 256, [0,256])
 plt.show()
+plt.close()
